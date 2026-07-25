@@ -1,0 +1,175 @@
+/* 🌸 Garden of Prayer - Common Media Art Design System */
+:root {
+  --bg-dark: #0b130e;
+  --bg-card: rgba(22, 36, 28, 0.85);
+  --primary-gold: #e2c079;
+  --accent-green: #2d5a3f;
+  --accent-light: #52a373;
+  --text-main: #f0f4f1;
+  --text-muted: #9ab4a3;
+  --danger: #e74c3c;
+  --border-color: rgba(226, 192, 121, 0.3);
+  --glass-bg: rgba(15, 26, 20, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* 어두운 초록 그래디언트 배경 Fallback */
+.fallback-gradient-bg {
+  background: radial-gradient(circle at center, #1b3a29 0%, #0a1810 70%, #040a06 100%);
+}
+
+/* 공통 버튼 디자인 */
+.btn {
+  background: linear-gradient(135deg, #1d3e2b, #12281b);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #28543b, #1a3826);
+  border-color: var(--primary-gold);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #d4af37, #aa8c2c);
+  color: #0b130e;
+  border: none;
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #e2c079, #c4a133);
+  box-shadow: 0 0 15px rgba(226, 192, 121, 0.4);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #c0392b, #962d22);
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+/* 모달 커스텀 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 32px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-card {
+  transform: scale(1);
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  color: var(--primary-gold);
+  margin-bottom: 16px;
+}
+
+.modal-desc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* 이름표 앵커 스타일 (9가지 포지션) */
+.name-tag {
+  position: absolute;
+  background: rgba(10, 20, 14, 0.85);
+  color: var(--primary-gold);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+/* 9가지 Anchor CSS 위치 지정 */
+.anchor-top { bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-6px); }
+.anchor-top-right { bottom: 100%; left: 100%; transform: translateY(-6px); }
+.anchor-right { top: 50%; left: 100%; transform: translateY(-50%) translateX(6px); }
+.anchor-bottom-right { top: 100%; left: 100%; transform: translateY(6px); }
+.anchor-bottom { top: 100%; left: 50%; transform: translateX(-50%) translateY(6px); }
+.anchor-bottom-left { top: 100%; right: 100%; transform: translateY(6px); }
+.anchor-left { top: 50%; right: 100%; transform: translateY(-50%) translateX(-6px); }
+.anchor-top-left { bottom: 100%; right: 100%; transform: translateY(-6px); }
+.anchor-center { top: 50%; left: 50%; transform: translate(-50%, -50%); }

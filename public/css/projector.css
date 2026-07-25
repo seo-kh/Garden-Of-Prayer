@@ -1,0 +1,77 @@
+/* 🌸 Projector Media Art Display Styles */
+#app-projector {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+}
+
+/* 정원 배경 미디어 컨테이너 */
+.projector-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.projector-background img,
+.projector-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 정원 위에 피어나는 꽃들 레이어 */
+.projector-flower-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* 꽃 렌더링 개별 아이템 */
+.projector-flower-item {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    transform: translate(-50%, -50%);
+    animation: flowerBloomAnim 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.projector-flower-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+}
+
+/* 실시간 꽃 피어나기 애니메이션 (Scale-up + Fade-in + Glow) */
+@keyframes flowerBloomAnim {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.1) rotate(-20deg);
+        filter: brightness(2) blur(4px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
+        filter: brightness(1.2) blur(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        filter: brightness(1) blur(0);
+    }
+}
