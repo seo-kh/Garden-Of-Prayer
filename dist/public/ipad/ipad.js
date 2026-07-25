@@ -238,23 +238,84 @@ class IpadApp {
         nameTag.className = `name-tag anchor-${this.selectedAnchor}`;
         this.updateLayoutBackground();
         this.renderExistingFlowers();
+        // 💡 화면이 표시된 후 비디오 재생 강제 재시도 (Step 3 전환 직후)
+        const video = document.querySelector('#layout-garden-viewport .bg-video');
+        if (video) {
+            video.play().catch((err) => {
+                console.warn('Step3 비디오 재생 실패:', err);
+            });
+        }
     }
-    // 미니 정원 배경 업데이트 (이미지 원본 비율을 유지하며 화면 내 꽉 차게: contain)
+    // 💡 미니 정원 배경 업데이트 (이미지 / 비디오 모두 대응)
     updateLayoutBackground() {
         const viewport = document.getElementById('layout-garden-viewport');
-        if (this.mainScene && this.mainScene.backgroundImage) {
-            viewport.style.backgroundImage = `url("${this.mainScene.backgroundImage}")`;
-            viewport.style.backgroundSize = 'contain';
-            viewport.style.backgroundPosition = 'center';
-            viewport.style.backgroundRepeat = 'no-repeat';
+        if (!viewport)
+            return;
+        const bgUrl = this.mainScene?.backgroundImage;
+        // 기존 비디오 엘리먼트 제거
+        const existingVideo = viewport.querySelector('.bg-video');
+        if (bgUrl) {
             viewport.classList.remove('fallback-gradient-bg');
+            if (this.isVideoUrl(bgUrl)) {
+                viewport.style.backgroundImage = '';
+                // 비디오가 이미 동일한 src로 존재하는 경우 재생만 보장
+                if (existingVideo && (existingVideo.src === bgUrl || existingVideo.currentSrc === bgUrl)) {
+                    existingVideo.play().catch(() => { });
+                    return;
+                }
+                if (existingVideo) {
+                    existingVideo.remove();
+                }
+                // 새로운 비디오 태그 생성
+                const video = document.createElement('video');
+                video.className = 'bg-video';
+                video.src = bgUrl;
+                // iPad / Safari 인라인 자동재생 필수 속성 세팅
+                video.autoplay = true;
+                video.loop = true;
+                video.muted = true;
+                video.volume = 0;
+                video.playsInline = true;
+                video.setAttribute('muted', '');
+                video.setAttribute('playsinline', '');
+                video.setAttribute('autoplay', '');
+                video.setAttribute('loop', '');
+                // 기존 layer 요소들보다 뒤(가장 앞의 자식)로 삽입
+                viewport.insertBefore(video, viewport.firstChild);
+                // 비디오 로드 완료 시 재생 시도
+                video.onloadedmetadata = () => {
+                    video.play().catch((err) => {
+                        console.warn('비디오 play() 에러:', err);
+                    });
+                };
+            }
+            else {
+                // 이미지 배경
+                if (existingVideo)
+                    existingVideo.remove();
+                viewport.style.backgroundImage = `url("${bgUrl}")`;
+                viewport.style.backgroundSize = 'contain';
+                viewport.style.backgroundPosition = 'center';
+                viewport.style.backgroundRepeat = 'no-repeat';
+            }
         }
         else {
+            // 배경 미지정 시
+            if (existingVideo)
+                existingVideo.remove();
             viewport.style.backgroundImage = '';
             viewport.classList.add('fallback-gradient-bg');
         }
     }
-    // 해당 씬의 기존 모든 꽃들 렌더링 (★ 필수 반영)
+    // 비디오 확장자 감지 헬퍼 메서드
+    isVideoUrl(url) {
+        if (!url)
+            return false;
+        const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov'];
+        const cleanUrl = url.split('?')[0].toLowerCase();
+        return videoExtensions.some((ext) => cleanUrl.endsWith(ext));
+    }
+    // 해당 씬의 기존 모든 꽃들 렌더링
     renderExistingFlowers() {
         const layer = document.getElementById('existing-flowers-layer');
         layer.innerHTML = '';

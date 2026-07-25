@@ -299,6 +299,7 @@
     height: 100%;
 }
 
+/* 🌸 layout-viewport 및 비디오 배경 스타일 */
 .layout-viewport {
     flex: 1;
     position: relative;
@@ -308,13 +309,38 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-
-    /* 🌸 이미지는 절대로 잘리지 않고(contain), 중앙에 밀착해서 꽉 차게 지정 */
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-
     transition: background-image 0.3s ease-in-out;
+}
+
+/* 동적으로 추가되는 비디오 배경 */
+.layout-viewport .bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 프로젝터/Admin과 동일하게 비율 유지 */
+    object-position: center;
+    z-index: 1; /* 기존 레이어(z-index: 15, 30)보다 아래에 위치 */
+    pointer-events: none;
+}
+
+/* 기존 꽃 레이어 및 유저 드래그 아이템의 z-index 상향 조정 */
+#existing-flowers-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.user-flower-item {
+    z-index: 30;
 }
 
 .layout-sidebar {

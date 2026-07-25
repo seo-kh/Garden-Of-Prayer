@@ -53,45 +53,61 @@ class AdminSettingApp {
     }
 
     private renderBackgroundMedia(src: string) {
-        const bgContainer = document.getElementById('admin-preview-bg')!;
-        const viewport = document.getElementById('admin-preview-viewport')!;
-        bgContainer.innerHTML = '';
+        console.log('[BG Media] 호출됨, 전달된 src:', src);
 
-        if (!src || !src.trim()) {
-            viewport.className = 'admin-preview-viewport fallback-gradient-bg';
+        const bgContainer = document.getElementById('admin-preview-bg');
+        const viewport = document.getElementById('admin-preview-viewport');
+
+        if (!bgContainer) {
+            console.error('[BG Media] #admin-preview-bg 요소를 찾을 수 없습니다.');
             return;
         }
 
-        viewport.className = 'admin-preview-viewport';
+        bgContainer.innerHTML = '';
 
+        if (!src || !src.trim()) {
+            console.warn('[BG Media] src가 비어있어서 리턴합니다.');
+            if (viewport) viewport.className = 'admin-preview-viewport fallback-gradient-bg';
+            return;
+        }
+
+        if (viewport) viewport.className = 'admin-preview-viewport';
+
+        const cleanSrc = src.split('?')[0].toLowerCase();
         const isVideo =
             src.startsWith('data:video') ||
-            src.endsWith('.mp4') ||
-            src.endsWith('.mov') ||
-            src.endsWith('.webm');
+            src.startsWith('blob:') ||
+            /\.(mp4|mov|webm|ogg|m4v)$/i.test(cleanSrc);
+
+        console.log('[BG Media] isVideo 판별 결과:', isVideo);
 
         if (isVideo) {
             const videoEl = document.createElement('video');
             videoEl.src = src;
+            videoEl.muted = true;
             videoEl.autoplay = true;
             videoEl.loop = true;
-            videoEl.muted = true;
             videoEl.playsInline = true;
 
-            // 🌟 가득 채우기 필수 스타일
+            videoEl.setAttribute('muted', '');
+            videoEl.setAttribute('playsinline', '');
+            videoEl.setAttribute('autoplay', '');
+
             videoEl.style.width = '100%';
             videoEl.style.height = '100%';
             videoEl.style.objectFit = 'contain';
             videoEl.style.objectPosition = 'center';
             videoEl.style.display = 'block';
 
-            videoEl.play().catch((err) => console.log('Video error:', err));
             bgContainer.appendChild(videoEl);
+            console.log('[BG Media] <video> 태그 append 완료');
+
+            videoEl.play().catch((err) => {
+                console.warn('[BG Media] Video play 실패:', err);
+            });
         } else {
             const imgEl = document.createElement('img');
             imgEl.src = src;
-
-            // 🌟 가득 채우기 필수 스타일
             imgEl.style.width = '100%';
             imgEl.style.height = '100%';
             imgEl.style.objectFit = 'contain';
@@ -99,6 +115,7 @@ class AdminSettingApp {
             imgEl.style.display = 'block';
 
             bgContainer.appendChild(imgEl);
+            console.log('[BG Media] <img> 태그 append 완료');
         }
     }
 
@@ -285,12 +302,12 @@ class AdminSettingApp {
         });
 
         // Drag & Drop
-        viewport.addEventListener('dragover', (e) => e.preventDefault());
-        viewport.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const file = e.dataTransfer?.files[0];
-            if (file) this.handleBgFile(file);
-        });
+        // viewport.addEventListener('dragover', (e) => e.preventDefault());
+        // viewport.addEventListener('drop', (e) => {
+        //     e.preventDefault();
+        //     const file = e.dataTransfer?.files[0];
+        //     if (file) this.handleBgFile(file);
+        // });
     }
 
     private handleBgFile(file: File) {
