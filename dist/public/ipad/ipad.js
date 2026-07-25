@@ -122,59 +122,52 @@ class IpadApp {
         const colorBtns = document.querySelectorAll('.color-btn:not(#custom-color-btn)');
         const customBtn = document.getElementById('custom-color-btn');
         const nativePicker = document.getElementById('native-color-picker');
-        // 🚨 디버깅용: 만약 요소를 찾지 못했다면 콘솔에 에러 표시
-        if (!customBtn) {
-            console.error("HTML에서 'custom-color-btn' id를 가진 요소를 찾을 수 없습니다.");
-        }
-        if (!nativePicker) {
-            console.error("HTML에서 'native-color-picker' id를 가진 요소를 찾을 수 없습니다.");
-        }
-        // 1. 기본 색상 버튼 클릭
+        // 1. 기본 색상 팔레트 버튼 클릭
         colorBtns.forEach((btn) => {
             btn.addEventListener('click', () => {
                 allColorBtns.forEach((b) => b.classList.remove('active'));
                 btn.classList.add('active');
-                this.setBrushColor(btn.dataset.color || '#ff4757');
+                const color = btn.dataset.color || '#ff4757';
+                this.setBrushColor(color);
             });
         });
-        // 2. 커스텀 Color Picker 버튼 이벤트 (Optional Chaining으로 null 방어)
+        // 2. 커스텀 Color Picker 버튼 클릭 시 (label이 input을 알아서 클릭해주므로 active 스타일만 부여)
         customBtn?.addEventListener('click', () => {
             allColorBtns.forEach((b) => b.classList.remove('active'));
             customBtn.classList.add('active');
             if (nativePicker) {
                 this.setBrushColor(nativePicker.value);
-                nativePicker.click();
             }
         });
-        // 3. 네이티브 Color Picker 색상 변경 핸들러
+        // 3. Color Picker 값 변경 시 (input: 실시간 드래그 / change: 선택 완료)
         const handleColorChange = () => {
             if (!nativePicker)
                 return;
             const selectedColor = nativePicker.value;
             allColorBtns.forEach((b) => b.classList.remove('active'));
             customBtn?.classList.add('active');
-            if (customBtn)
-                customBtn.style.borderColor = selectedColor;
+            // 🎨 커스텀 버튼의 배경색을 선택한 색상으로 채우기!
+            if (customBtn) {
+                customBtn.style.background = selectedColor;
+            }
             this.setBrushColor(selectedColor);
         };
         nativePicker?.addEventListener('input', handleColorChange);
         nativePicker?.addEventListener('change', handleColorChange);
     }
-    // 💡 펜 모드 전환 및 색상 설정을 담당하는 헬퍼 메서드
+    // 💡 펜 색상 변경 공통 헬퍼 메서드
     setBrushColor(color) {
         this.brushColor = color;
         this.isEraser = false;
-        // Canvas Context가 클래스 멤버로 존재한다면 즉시 strokeStyle 업데이트
+        // 캔버스 Context의 strokeStyle을 즉시 변경 (핵심!)
         if (this.ctx) {
             this.ctx.strokeStyle = color;
         }
-        // 툴 UI 상태 업데이트
+        // 도구 모드 UI 업데이트 (펜 활성화 / 지우개 비활성화)
         const penTool = document.getElementById('tool-pen');
         const eraserTool = document.getElementById('tool-eraser');
-        if (penTool)
-            penTool.classList.add('active');
-        if (eraserTool)
-            eraserTool.classList.remove('active');
+        penTool?.classList.add('active');
+        eraserTool?.classList.remove('active');
     }
     // 단계 이동 핸들링
     initStepEvents() {
@@ -246,11 +239,14 @@ class IpadApp {
         this.updateLayoutBackground();
         this.renderExistingFlowers();
     }
-    // 미니 정원 배경 업데이트 (Admin의 Main Scene 배경 사용 / 없을 시 어두운 초록 그래디언트)
+    // 미니 정원 배경 업데이트 (이미지 원본 비율을 유지하며 화면 내 꽉 차게: contain)
     updateLayoutBackground() {
         const viewport = document.getElementById('layout-garden-viewport');
         if (this.mainScene && this.mainScene.backgroundImage) {
-            viewport.style.backgroundImage = `url(${this.mainScene.backgroundImage})`;
+            viewport.style.backgroundImage = `url("${this.mainScene.backgroundImage}")`;
+            viewport.style.backgroundSize = 'contain';
+            viewport.style.backgroundPosition = 'center';
+            viewport.style.backgroundRepeat = 'no-repeat';
             viewport.classList.remove('fallback-gradient-bg');
         }
         else {

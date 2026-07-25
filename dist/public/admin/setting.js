@@ -36,13 +36,11 @@ class AdminSettingApp {
     renderScene() {
         if (!this.scene)
             return;
-        document.getElementById('setting-scene-name').innerText = `씬 설정: ${this.scene.name}`;
         // 배경 미디어 렌더링
         this.renderBackgroundMedia(this.scene.backgroundImage);
         // 해당 씬의 모든 꽃 렌더링 (★ 필수)
         this.renderEditableFlowers();
     }
-    // 배경 미디어 분기 재생 (이미지/GIF/동영상)
     renderBackgroundMedia(src) {
         const bgContainer = document.getElementById('admin-preview-bg');
         const viewport = document.getElementById('admin-preview-viewport');
@@ -63,18 +61,24 @@ class AdminSettingApp {
             videoEl.loop = true;
             videoEl.muted = true;
             videoEl.playsInline = true;
+            // 🌟 가득 채우기 필수 스타일
             videoEl.style.width = '100%';
             videoEl.style.height = '100%';
-            videoEl.style.objectFit = 'cover';
+            videoEl.style.objectFit = 'contain';
+            videoEl.style.objectPosition = 'center';
+            videoEl.style.display = 'block';
             videoEl.play().catch((err) => console.log('Video error:', err));
             bgContainer.appendChild(videoEl);
         }
         else {
             const imgEl = document.createElement('img');
             imgEl.src = src;
+            // 🌟 가득 채우기 필수 스타일
             imgEl.style.width = '100%';
             imgEl.style.height = '100%';
-            imgEl.style.objectFit = 'cover';
+            imgEl.style.objectFit = 'contain';
+            imgEl.style.objectPosition = 'center';
+            imgEl.style.display = 'block';
             bgContainer.appendChild(imgEl);
         }
     }

@@ -288,11 +288,14 @@ class IpadApp {
         this.renderExistingFlowers();
     }
 
-    // 미니 정원 배경 업데이트 (Admin의 Main Scene 배경 사용 / 없을 시 어두운 초록 그래디언트)
+    // 미니 정원 배경 업데이트 (이미지 원본 비율을 유지하며 화면 내 꽉 차게: contain)
     private updateLayoutBackground() {
         const viewport = document.getElementById('layout-garden-viewport')!;
         if (this.mainScene && this.mainScene.backgroundImage) {
-            viewport.style.backgroundImage = `url(${this.mainScene.backgroundImage})`;
+            viewport.style.backgroundImage = `url("${this.mainScene.backgroundImage}")`;
+            viewport.style.backgroundSize = 'contain';
+            viewport.style.backgroundPosition = 'center';
+            viewport.style.backgroundRepeat = 'no-repeat';
             viewport.classList.remove('fallback-gradient-bg');
         } else {
             viewport.style.backgroundImage = '';

@@ -16,7 +16,7 @@ class ProjectorApp {
         this.socket.on('flower_added', (data) => {
             if (this.currentMainScene && data.sceneId === this.currentMainScene.id) {
                 this.currentMainScene = data.scene;
-                this.addFlowerWithAnimation(data.flower);
+                this.addFlowerWithAnimation(data.flower, true);
             }
         });
         // 3. 메인 씬 변경 수신
@@ -72,6 +72,12 @@ class ProjectorApp {
             videoEl.loop = true;
             videoEl.muted = true;
             videoEl.playsInline = true;
+            // 🌟 contain 인라인 스타일 및 디스플레이 처리
+            videoEl.style.width = '100%';
+            videoEl.style.height = '100%';
+            videoEl.style.objectFit = 'contain';
+            videoEl.style.objectPosition = 'center';
+            videoEl.style.display = 'block';
             videoEl.play().catch((err) => console.log('Video autoplay error:', err));
             bgContainer.appendChild(videoEl);
         }
@@ -79,6 +85,12 @@ class ProjectorApp {
             const imgEl = document.createElement('img');
             imgEl.src = src;
             imgEl.alt = '정원 배경';
+            // 🌟 contain 인라인 스타일 및 디스플레이 처리
+            imgEl.style.width = '100%';
+            imgEl.style.height = '100%';
+            imgEl.style.objectFit = 'contain';
+            imgEl.style.objectPosition = 'center';
+            imgEl.style.display = 'block';
             bgContainer.appendChild(imgEl);
         }
     }
@@ -92,7 +104,7 @@ class ProjectorApp {
         flowerItem.className = 'projector-flower-item';
         flowerItem.style.left = `${flower.posX * 100}%`;
         flowerItem.style.top = `${flower.posY * 100}%`;
-        // 신규 추가 시 애니메이션 재생
+        // 기존에 이미 있던 꽃들은 애니메이션 없이 즉시 표시
         if (!isNew) {
             flowerItem.style.animation = 'none';
             flowerItem.style.opacity = '1';

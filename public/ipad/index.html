@@ -77,13 +77,13 @@
         <p class="form-subtitle">정원에 함께 피워낼 아름다운 대상의 이름을 입력해 주세요.</p>
         
         <div class="form-input-group">
-          <label class="form-label" for="owner-name">이름 (Name)</label>
-          <input type="text" id="owner-name" class="form-input" placeholder="예: 우리 엄마, James, 민수" maxlength="20">
+          <label class="form-label" for="owner-name">이름</label>
+          <input type="text" id="owner-name" class="form-input" placeholder="예: 우리 엄마" maxlength="20">
         </div>
 
         <div class="nav-bar">
-          <button class="btn" id="btn-back-to-step1">⬅️ 이전 (그리기)</button>
-          <button class="btn btn-primary" id="btn-to-step3">다음 (배치) ➔</button>
+          <button class="btn" id="btn-back-to-step1">이전</button>
+          <button class="btn btn-primary" id="btn-to-step3">다음</button>
         </div>
       </div>
     </main>
@@ -106,7 +106,7 @@
         <!-- 우측 앵커 선택 패널 -->
         <div class="layout-sidebar">
           <div>
-            <div class="toolbar-group-title">이름표 위치 (9가지 앵커)</div>
+            <div class="toolbar-group-title">이름 위치</div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
               꽃과 이름표가 배치될 상대적 앵커 포인트를 클릭하세요.
             </p>
@@ -128,8 +128,8 @@
               💡 정원 위 꽃을 손가락으로 드래그하여 원하시는 위치에 올릴 수 있습니다.
             </p>
             <div class="nav-bar">
-              <button class="btn" id="btn-back-to-step2">⬅️ 이전 (이름)</button>
-              <button class="btn btn-primary" id="btn-open-confirm">정원에 심기 ✨</button>
+              <button class="btn" id="btn-back-to-step2">이전</button>
+              <button class="btn btn-primary" id="btn-open-confirm">정원에 심기</button>
             </div>
           </div>
         </div>
@@ -139,13 +139,13 @@
     <!-- Confirm 전송 확인 모달 -->
     <div class="modal-overlay" id="confirm-modal">
       <div class="modal-card">
-        <h3 class="modal-title">🌸 정원에 피워내기</h3>
+        <h3 class="modal-title">정원에 피워내기</h3>
         <p class="modal-desc">
           작성하신 꽃과 이름을 정원으로 전송하시겠습니까?<br>전송 후 프로젝터 화면에 피어나게 됩니다.
         </p>
         <div class="modal-actions">
           <button class="btn" id="btn-cancel-send">취소</button>
-          <button class="btn btn-primary" id="btn-submit-flower">확인 및 전송 🚀</button>
+          <button class="btn btn-primary" id="btn-submit-flower">확인🚀</button>
         </div>
       </div>
     </div>

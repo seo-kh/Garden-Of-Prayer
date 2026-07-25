@@ -153,12 +153,38 @@
     height: calc(100vh - 64px);
 }
 
+/* 프리뷰 박스 (부모 영역) */
 .admin-preview-viewport {
-    flex: 1;
     position: relative;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* 🌟 삐져나오는 미디어 잘라내기 */
+    background-color: #000; /* 미디어 로딩 중 깜빡임 방지 */
+}
+
+/* JS에서 생성되는 미디어 컨테이너 */
+#admin-preview-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* 꽃 레이어(z-index: 2)보다 뒤에 위치 */
+    pointer-events: none; /* 배경 미디어 클릭 방지 */
+}
+
+/* admin.css 또는 setting.css */
+#admin-preview-bg img,
+#admin-preview-bg video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important; /* 🌟 잘림 없이 전체 미디어 표시 */
+    object-position: center !important;
+}
+
+/* contain으로 인해 생기는 여백을 깔끔한 검은색으로 처리 */
+.admin-preview-viewport {
+    background-color: #000;
 }
 
 .admin-setting-sidebar {
