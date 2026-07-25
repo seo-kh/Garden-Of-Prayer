@@ -152,16 +152,13 @@ class AdminMainApp {
         const modal = document.getElementById('create-scene-modal');
         const nameInput = document.getElementById('new-scene-name');
         document.getElementById('btn-open-create-modal').addEventListener('click', () => {
-            console.log('Create new scene');
             nameInput.value = '';
             modal.classList.add('active');
         });
         document.getElementById('btn-cancel-create').addEventListener('click', () => {
-            console.log('Cancel new scene');
             modal.classList.remove('active');
         });
         document.getElementById('btn-submit-create').addEventListener('click', async () => {
-            console.log('Submit new scene');
             const name = nameInput.value.trim();
             if (!name) {
                 alert('씬 이름을 반드시 작성해 주세요!');

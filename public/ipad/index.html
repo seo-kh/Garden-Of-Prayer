@@ -37,7 +37,7 @@
           </div>
 
           <div>
-            <div class="toolbar-group-title">색상 선택 (Color Picker)</div>
+            <div class="toolbar-group-title">색상 선택</div>
             <div class="color-palette">
               <!-- 검은색 제외 기본 팔레트 -->
               <button class="color-btn active" style="background-color: #ff4757;" data-color="#ff4757"></button>
@@ -47,14 +47,10 @@
               <button class="color-btn" style="background-color: #1e90ff;" data-color="#1e90ff"></button>
               <button class="color-btn" style="background-color: #3742fa;" data-color="#3742fa"></button>
               <button class="color-btn" style="background-color: #a55eea;" data-color="#a55eea"></button>
-              <button class="color-btn" style="background-color: #ffffff;" data-color="#ffffff"></button>
-              
-              <!-- Color Picker 커스텀 아이콘 버튼 -->
-              <button class="color-btn color-picker-icon-btn" id="custom-color-btn" title="더많은 색상">
+              <label class="color-btn color-picker-icon-btn" id="custom-color-btn" for="native-color-picker" title="더많은 색상">
                 🎨
-              </button>
-              <!-- 숨겨진 네이티브 color input -->
-              <input type="color" id="native-color-picker" value="#ff4757" style="display: none;">
+                <input type="color" id="native-color-picker" value="#ff4757" style="position: absolute; opacity: 0; width: 0; height: 0;">
+              </label>
             </div>
           </div>
 
@@ -64,11 +60,11 @@
               <button class="mode-btn active" id="tool-pen">✏️ 펜</button>
               <button class="mode-btn" id="tool-eraser">🧹 지우개</button>
             </div>
-          </div>
 
-          <div class="nav-bar" style="margin-top: auto;">
-            <button class="btn btn-danger" id="btn-clear-canvas">초기화</button>
-            <button class="btn btn-primary" id="btn-to-step2">다음 단계 ➔</button>
+            <div class="nav-bar" style="margin-top: 30px;">
+              <button class="btn btn-danger" id="btn-clear-canvas">초기화</button>
+              <button class="btn btn-primary" id="btn-to-step2">다음 단계 ➔</button>
+            </div>
           </div>
         </div>
       </div>

@@ -59,14 +59,12 @@ class IpadApp {
             }
         });
     }
-    // Canvas 드로잉 이벤트 (최종 수정본)
+    // Canvas 드로잉 이벤트
     initCanvasEvents() {
         const getPos = (e) => {
             const rect = this.canvas.getBoundingClientRect();
-            const rectWidth = rect.width || 600;
-            const rectHeight = rect.height || 600;
-            const scaleX = this.canvas.width / rectWidth;
-            const scaleY = this.canvas.height / rectHeight;
+            const scaleX = this.canvas.width / rect.width;
+            const scaleY = this.canvas.height / rect.height;
             return {
                 x: (e.clientX - rect.left) * scaleX,
                 y: (e.clientY - rect.top) * scaleY,
@@ -74,50 +72,25 @@ class IpadApp {
         };
         this.canvas.addEventListener('pointerdown', (e) => {
             this.isDrawing = true;
-            // ★ pointerdown에서의 preventDefault() 제거!
-            try {
-                this.canvas.setPointerCapture(e.pointerId);
-            }
-            catch (err) { }
             const pos = getPos(e);
-            // 점 찍기 로직
-            this.ctx.fillStyle = this.isEraser ? 'rgba(0,0,0,1)' : this.brushColor;
-            this.ctx.globalCompositeOperation = this.isEraser ? 'destination-out' : 'source-over';
-            this.ctx.beginPath();
-            this.ctx.arc(pos.x, pos.y, this.brushSize / 2, 0, Math.PI * 2);
-            this.ctx.fill();
-            // 선 시작점 설정
             this.ctx.beginPath();
             this.ctx.moveTo(pos.x, pos.y);
         });
         this.canvas.addEventListener('pointermove', (e) => {
             if (!this.isDrawing)
                 return;
-            // pointermove에서만 제스처 방지
-            e.preventDefault();
             const pos = getPos(e);
             this.ctx.strokeStyle = this.isEraser ? 'rgba(0,0,0,1)' : this.brushColor;
             this.ctx.globalCompositeOperation = this.isEraser ? 'destination-out' : 'source-over';
             this.ctx.lineWidth = this.brushSize;
-            // ★ 선 잇기
             this.ctx.lineTo(pos.x, pos.y);
             this.ctx.stroke();
-            // ★ 연속적인 선을 그리기 위한 필수 패스 갱신
-            this.ctx.beginPath();
-            this.ctx.moveTo(pos.x, pos.y);
         });
-        const stopDrawing = (e) => {
-            if (!this.isDrawing)
-                return;
+        const stopDrawing = () => {
             this.isDrawing = false;
-            try {
-                this.canvas.releasePointerCapture(e.pointerId);
-            }
-            catch (err) { }
         };
         this.canvas.addEventListener('pointerup', stopDrawing);
         this.canvas.addEventListener('pointerleave', stopDrawing);
-        this.canvas.addEventListener('pointercancel', stopDrawing); // 아이패드 펜슬용 추가
         // 굵기 슬라이더
         const sizeInput = document.getElementById('brush-size');
         const sizeVal = document.getElementById('brush-size-val');
@@ -145,31 +118,63 @@ class IpadApp {
     }
     // 색상 팔레트 및 Color Picker 연동
     initColorEvents() {
+        const allColorBtns = document.querySelectorAll('.color-btn');
         const colorBtns = document.querySelectorAll('.color-btn:not(#custom-color-btn)');
-        colorBtns.forEach((btn) => {
-            btn.addEventListener('click', () => {
-                colorBtns.forEach((b) => b.classList.remove('active'));
-                btn.classList.add('active');
-                this.brushColor = btn.dataset.color || '#ff4757';
-                this.isEraser = false;
-                document.getElementById('tool-pen').classList.add('active');
-                document.getElementById('tool-eraser').classList.remove('active');
-            });
-        });
-        // Color Picker 팝업 아이콘 클릭 시 네이티브 color picker 띄우기
         const customBtn = document.getElementById('custom-color-btn');
         const nativePicker = document.getElementById('native-color-picker');
-        customBtn.addEventListener('click', () => {
-            nativePicker.click();
+        // 🚨 디버깅용: 만약 요소를 찾지 못했다면 콘솔에 에러 표시
+        if (!customBtn) {
+            console.error("HTML에서 'custom-color-btn' id를 가진 요소를 찾을 수 없습니다.");
+        }
+        if (!nativePicker) {
+            console.error("HTML에서 'native-color-picker' id를 가진 요소를 찾을 수 없습니다.");
+        }
+        // 1. 기본 색상 버튼 클릭
+        colorBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                allColorBtns.forEach((b) => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.setBrushColor(btn.dataset.color || '#ff4757');
+            });
         });
-        nativePicker.addEventListener('input', () => {
-            this.brushColor = nativePicker.value;
-            customBtn.style.border = `3px solid ${this.brushColor}`;
-            colorBtns.forEach((b) => b.classList.remove('active'));
-            this.isEraser = false;
-            document.getElementById('tool-pen').classList.add('active');
-            document.getElementById('tool-eraser').classList.remove('active');
+        // 2. 커스텀 Color Picker 버튼 이벤트 (Optional Chaining으로 null 방어)
+        customBtn?.addEventListener('click', () => {
+            allColorBtns.forEach((b) => b.classList.remove('active'));
+            customBtn.classList.add('active');
+            if (nativePicker) {
+                this.setBrushColor(nativePicker.value);
+                nativePicker.click();
+            }
         });
+        // 3. 네이티브 Color Picker 색상 변경 핸들러
+        const handleColorChange = () => {
+            if (!nativePicker)
+                return;
+            const selectedColor = nativePicker.value;
+            allColorBtns.forEach((b) => b.classList.remove('active'));
+            customBtn?.classList.add('active');
+            if (customBtn)
+                customBtn.style.borderColor = selectedColor;
+            this.setBrushColor(selectedColor);
+        };
+        nativePicker?.addEventListener('input', handleColorChange);
+        nativePicker?.addEventListener('change', handleColorChange);
+    }
+    // 💡 펜 모드 전환 및 색상 설정을 담당하는 헬퍼 메서드
+    setBrushColor(color) {
+        this.brushColor = color;
+        this.isEraser = false;
+        // Canvas Context가 클래스 멤버로 존재한다면 즉시 strokeStyle 업데이트
+        if (this.ctx) {
+            this.ctx.strokeStyle = color;
+        }
+        // 툴 UI 상태 업데이트
+        const penTool = document.getElementById('tool-pen');
+        const eraserTool = document.getElementById('tool-eraser');
+        if (penTool)
+            penTool.classList.add('active');
+        if (eraserTool)
+            eraserTool.classList.remove('active');
     }
     // 단계 이동 핸들링
     initStepEvents() {
