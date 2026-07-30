@@ -38,10 +38,12 @@ app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
 // 정적 자원 서빙 (public 디렉터리)
 const publicPath = path.join(__dirname, '../public');
-app.use(express.static(publicPath));
+// app.use(express.static(publicPath));
 // dist 폴더를 클라이언트에서 접근할 수 있도록 지정
 app.use(express.static(path.join(process.cwd(), 'dist')));
 
+// dist에 없는 css 원본 폴더를 직접 연결
+app.use('/public/css', express.static(path.join(process.cwd(), 'public/css')));
 // ----------------------------------------------------
 // 페이지 라우팅
 // ----------------------------------------------------
