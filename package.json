@@ -2,7 +2,7 @@
   "name": "garden_of_prayer",
   "version": "1.0.0",
   "description": "Garden of Prayer Interactive Media Art Event Web Application (TypeScript)",
-  "main": "dist/server.js",
+  "main": "dist/src/server.js",
   "type": "module",
   "scripts": {
     "dev:debug": "cross-env NODE_ENV=debug tsx watch src/server.ts",

@@ -42,8 +42,8 @@ const publicPath = path.join(__dirname, '../public');
 // dist 폴더를 클라이언트에서 접근할 수 있도록 지정
 app.use(express.static(path.join(process.cwd(), 'dist')));
 
-// dist에 없는 css 원본 폴더를 직접 연결
-app.use('/public/css', express.static(path.join(process.cwd(), 'public/css')));
+// public 폴더 전체를 /public URL 프리픽스로 정적 제공
+app.use('/public', express.static(path.join(process.cwd(), 'public')));
 // ----------------------------------------------------
 // 페이지 라우팅
 // ----------------------------------------------------
