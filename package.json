@@ -1,14 +1,13 @@
 {
   "name": "garden_of_prayer",
   "version": "1.0.0",
-  "description": "Garden of Prayer Interactive Media Art Event Web Application (TypeScript)",
-  "main": "dist/src/server.js",
+  "description": "Garden of Prayer Interactive Media Art Event Web Application",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev:debug": "cross-env NODE_ENV=debug tsx watch src/server.ts",
-    "start:debug": "cross-env NODE_ENV=debug tsx src/server.ts",
-    "start:release": "cross-env NODE_ENV=release node dist/server.js",
-    "build": "tsc"
+    "start": "node server.js",
+    "dev:debug": "cross-env NODE_ENV=debug node server.js",
+    "start:release": "cross-env NODE_ENV=release node server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -17,14 +16,6 @@
     "express": "^4.19.2",
     "socket.io": "^4.7.5",
     "uuid": "^10.0.0"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.14.9",
-    "@types/uuid": "^10.0.0",
-    "tsx": "^4.16.2",
-    "typescript": "^5.5.3"
   },
   "private": true
 }
