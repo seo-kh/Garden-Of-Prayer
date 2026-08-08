@@ -11,9 +11,6 @@
   <div id="app-ipad">
     <!-- 상단 헤더 & 프로그래스 -->
     <header class="ipad-header">
-      <div class="ipad-title">
-        <span>🌸</span> 중보의 정원
-      </div>
       <div class="step-indicator">
         <div class="step-item active" id="indicator-1">1. 꽃 그리기</div>
         <div class="step-item" id="indicator-2">2. 이름 입력</div>
@@ -26,7 +23,7 @@
       <div class="canvas-layout">
         <div class="canvas-viewport">
           <p class="canvas-instruction">
-            중보 대상을 생각하며, 중보의 정원에서 심고싶은 꽃을 그려주세요.
+            중보 대상을 생각하며, 중보의 정원에 심고싶은 꽃을 그려주세요.
           </p>
           <canvas id="flower-canvas" width="400" height="600"></canvas>
         </div>
@@ -60,13 +57,13 @@
           <div>
             <div class="toolbar-group-title">도구 모드</div>
             <div class="mode-switch">
-              <button class="mode-btn active" id="tool-pen">✏️ 펜</button>
-              <button class="mode-btn" id="tool-eraser">🧹 지우개</button>
+              <button class="mode-btn active" id="tool-pen">펜</button>
+              <button class="mode-btn" id="tool-eraser">지우개</button>
             </div>
 
             <div class="nav-bar" style="margin-top: 30px;">
               <button class="btn btn-danger" id="btn-clear-canvas">초기화</button>
-              <button class="btn btn-primary" id="btn-to-step2">다음 단계 ➔</button>
+              <button class="btn btn-primary" id="btn-to-step2">다음 단계</button>
             </div>
           </div>
         </div>
@@ -76,8 +73,8 @@
     <!-- Step 2: Form (이름 입력) -->
     <main class="step-container" id="step-form">
       <div class="form-card">
-        <h2 class="form-title">중보 기도자 / 대상 이름</h2>
-        <p class="form-subtitle">정원에 함께 피워낼 아름다운 대상의 이름을 입력해 주세요.</p>
+        <h2 class="form-title">중보할 사람 이름</h2>
+        <p class="form-subtitle">정원에 심을 소중한 사람의 이름을 적어주세요.</p>
         
         <div class="form-input-group">
           <label class="form-label" for="owner-name">이름</label>
@@ -91,11 +88,16 @@
       </div>
     </main>
 
-    <!-- Step 3: Layout (꽃 위치 및 9앵커 설정) -->
+    <!-- Step 3: Layout (꽃 위치 및 2앵커 설정) -->
     <main class="step-container" id="step-layout">
       <div class="canvas-layout">
         <!-- 미니 정원 뷰포트 (배경 이미지/그래디언트 + 기존 모든 꽃 + 본인 꽃 드래그) -->
         <div class="layout-viewport fallback-gradient-bg" id="layout-garden-viewport">
+          <!-- 안내 문구 영역-->
+          <p class="user-flower-instruction">
+            정원 위 꽃을 손가락으로 드래그하여 원하시는 위치에 올릴 수 있습니다.
+          </p>
+
           <!-- 기존 꽃들이 렌더링될 레이어 -->
           <div id="existing-flowers-layer" style="position: absolute; width: 100%; height: 100%;"></div>
 
@@ -110,30 +112,22 @@
         <div class="layout-sidebar">
           <div>
             <div class="toolbar-group-title">이름 위치</div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
-              꽃과 이름표가 배치될 상대적 앵커 포인트를 클릭하세요.
+            <p style="font-size: 16px; color: var(--text-muted); margin-bottom: 20px;">
+              이름이 표시될 위치를 선택해주세요.
             </p>
-            <div class="anchor-grid-3x3">
-              <div class="anchor-cell" data-anchor="top-left" title="상단 좌측"><div class="anchor-dot"></div></div>
-              <div class="anchor-cell active" data-anchor="top" title="상단"><div class="anchor-dot"></div></div>
-              <div class="anchor-cell" data-anchor="top-right" title="상단 우측"><div class="anchor-dot"></div></div>
-              <div class="anchor-cell" data-anchor="left" title="좌측"><div class="anchor-dot"></div></div>
-              <div class="anchor-cell" data-anchor="center" title="중앙"><div class="anchor-dot"></div></div>
-              <div class="anchor-cell" data-anchor="right" title="우측"><div class="anchor-dot"></div></div>
-              <div class="anchor-cell" data-anchor="bottom-left" title="하단 좌측"><div class="anchor-dot"></div></div>
-              <div class="anchor-cell" data-anchor="bottom" title="하단"><div class="anchor-dot"></div></div>
-              <div class="anchor-cell" data-anchor="bottom-right" title="하단 우측"><div class="anchor-dot"></div></div>
+            <div class="anchor-grid-1x2">
+              <div class="anchor-cell active" data-anchor="top" title="상단">상단<div class="anchor-dot"></div></div>
+              <div class="anchor-cell" data-anchor="bottom" title="하단">하단<div class="anchor-dot"></div></div>
             </div>
           </div>
 
-          <div style="margin-top: auto;">
-            <p style="font-size: 0.85rem; color: var(--primary-gold); margin-bottom: 16px; text-align: center;">
-              💡 정원 위 꽃을 손가락으로 드래그하여 원하시는 위치에 올릴 수 있습니다.
-            </p>
+          <div style="margin-top: 12px;">
             <div class="nav-bar">
-              <button class="btn" id="btn-back-to-step2">이전</button>
-              <button class="btn btn-primary" id="btn-open-confirm">정원에 심기</button>
+              <button class="btn btn-primary btn-full" id="btn-open-confirm">정원에 심기</button>
             </div>
+          </div>
+          <div style="margin-top: auto;">
+              <button class="btn" id="btn-back-to-step2">이전</button>
           </div>
         </div>
       </div>

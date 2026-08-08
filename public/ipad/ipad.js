@@ -41,7 +41,7 @@ class IpadApp {
 
     // Canvas 해상도 선명하게 조정
     this.#canvas.width = 400;
-    this.#canvas.height = 600;
+    this.#canvas.height = 500;
     this.#ctx.lineCap = 'round';
     this.#ctx.lineJoin = 'round';
   }
@@ -418,7 +418,7 @@ class IpadApp {
     });
   }
 
-  // Layout 꽃 터치/마우스 드래그 & 3x3 9앵커 선택
+  // Layout 꽃 터치/마우스 드래그 & 1x2 2앵커 선택
   #initLayoutDragEvents() {
     const dragItem = document.getElementById('user-flower-drag');
     const viewport = document.getElementById('layout-garden-viewport');

@@ -1,4 +1,4 @@
-/* 🌸 iPad Application Layout Styles */
+/* iPad Application Layout Styles */
 #app-ipad {
     display: flex;
     flex-direction: column;
@@ -12,7 +12,7 @@
 /* 상단 헤더 & 단계 프로그래스바 */
 .ipad-header {
     height: 60px;
-    background: var(--glass-bg);
+    background: var(--ipad-tertiary);
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
@@ -20,15 +20,6 @@
     padding: 0 24px;
     z-index: 50;
     flex-shrink: 0; /* [수정] 헤더 높이 고정 */
-}
-
-.ipad-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--primary-gold);
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .step-indicator {
@@ -84,7 +75,7 @@
 .canvas-viewport {
     flex: 1;
     position: relative;
-    background: radial-gradient(circle at center, #162a1e 0%, #0b130e 100%);
+    background: url('/images/ipad_background.jpeg') no-repeat center / cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,7 +84,7 @@
 
 .canvas-instruction {
   position: absolute;
-  top: 24px; /* 캔버스 영역 상단에서의 위치 */
+  top:50px; /* 캔버스 영역 상단에서의 위치 */
   z-index: 10; /* 캔버스보다 위에 오도록 설정 */
   
   color: #ffffff; /* 글자 색상 (배경 어두운 톤에 맞춰 흰색계열) */
@@ -137,7 +128,8 @@
 
 .canvas-toolbar {
     width: 300px; /* [수정] 여유 있게 약간 넓힘 */
-    background: var(--glass-bg);
+    /* background: var(--glass-bg); */
+    background: var(--ipad-secondary);
     border-left: 1px solid var(--border-color);
     padding: 20px; /* [수정] 패딩 살짝 축소하여 높이 확보 */
     display: flex;
@@ -150,10 +142,10 @@
 }
 
 .toolbar-group-title {
-    font-size: 0.85rem;
+    font-size: 20px;
     color: var(--primary-gold);
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 20px;
 }
 
 /* 굵기 조절 */
@@ -255,11 +247,11 @@
 #step-form {
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at center, #1b3a29 0%, #0a1810 100%);
+    background: url('/images/ipad_background.jpeg') no-repeat center / cover;
 }
 
 .form-card {
-    background: var(--glass-bg);
+    background: var(--ipad-secondary);
     border: 1px solid var(--border-color);
     padding: 40px;
     border-radius: 24px;
@@ -365,7 +357,7 @@
 
 .layout-sidebar {
     width: 320px;
-    background: var(--glass-bg);
+    background: var(--ipad-secondary);
     border-left: 1px solid var(--border-color);
     padding: 20px; /* [수정] 패딩 축소 */
     display: flex;
@@ -376,16 +368,16 @@
     overflow-y: auto; /* [수정] 오버플로우 방지 */
 }
 
-/* 3x3 앵커 선택 그리드 */
-.anchor-grid-3x3 {
+/* 1x2 앵커 선택 그리드 */
+.anchor-grid-1x2 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-top: 8px;
 }
 
 .anchor-cell {
-    aspect-ratio: 1;
+    aspect-ratio: 4.0;
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -397,30 +389,17 @@
     position: relative;
 }
 
-.anchor-dot {
-    width: 12px;
-    height: 12px;
-    background: var(--danger);
-    border-radius: 50%;
-    transition: transform 0.2s ease;
-}
-
 .anchor-cell:hover,
 .anchor-cell.active {
     background: var(--accent-green);
     border-color: var(--primary-gold);
 }
 
-.anchor-cell.active .anchor-dot {
-    transform: scale(1.5);
-    box-shadow: 0 0 10px var(--danger);
-}
-
 /* 본인 꽃 미니 드래그 엘리먼트 */
 .user-flower-item {
     position: absolute;
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     transform: translate(-50%, -50%);
     cursor: move;
     touch-action: none;
@@ -432,6 +411,28 @@
     height: 100%;
     object-fit: contain;
     filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+}
+
+.user-flower-instruction {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    pointer-events: none;
+    margin: 0;
+
+    color: #ffffff; /* 글자 색상 (배경 어두운 톤에 맞춰 흰색계열) */
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    
+    /* 읽기 편하도록 은은한 배경과 그림자 추가 */
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    padding: 8px 16px;
+    border-radius: 20px;
 }
 
 .existing-flower-item {
