@@ -91,6 +91,26 @@
     overflow: hidden;
 }
 
+.canvas-instruction {
+  position: absolute;
+  top: 24px; /* 캔버스 영역 상단에서의 위치 */
+  z-index: 10; /* 캔버스보다 위에 오도록 설정 */
+  
+  color: #ffffff; /* 글자 색상 (배경 어두운 톤에 맞춰 흰색계열) */
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+  
+  /* 읽기 편하도록 은은한 배경과 그림자 추가 */
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  padding: 8px 16px;
+  border-radius: 20px;
+  
+  /* 클릭/터치가 캔버스 그리기를 방해하지 않도록 처리 */
+  pointer-events: none; 
+}
+
 #flower-canvas {
     touch-action: none;
     cursor: crosshair;

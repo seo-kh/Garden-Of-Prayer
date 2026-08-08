@@ -1,3 +1,6 @@
+// 중보 대상을 생각하며, 중보의  정원에서 심고싶은 꽃을 그려주세요.
+
+
 class IpadApp {
   #socket;
   #currentStep = 1;
@@ -37,7 +40,7 @@ class IpadApp {
     this.#ctx = this.#canvas.getContext('2d');
 
     // Canvas 해상도 선명하게 조정
-    this.#canvas.width = 600;
+    this.#canvas.width = 400;
     this.#canvas.height = 600;
     this.#ctx.lineCap = 'round';
     this.#ctx.lineJoin = 'round';
