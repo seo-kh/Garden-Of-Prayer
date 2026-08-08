@@ -218,6 +218,74 @@ class IpadApp {
     eraserTool?.classList.remove('active');
   }
 
+
+  /**
+ * 캔버스에서 실제로 그림이 그려진 영역만 잘라내어 DataURL로 반환합니다.
+ * @param {HTMLCanvasElement} canvas - 원본 캔버스 요소
+ * @param {string} [type='image/png'] - 반환할 이미지 타입
+ * @returns {string|null} 크롭된 이미지 DataURL (그림이 없으면 null)
+ */
+  #getCroppedDataURL(canvas, targetWidth = 80, type = 'image/png') {
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // 1. 전체 캔버스의 픽셀 데이터 가져오기
+    const imgData = ctx.getImageData(0, 0, width, height);
+    const data = imgData.data;
+
+    let minX = width, minY = height;
+    let maxX = -1, maxY = -1;
+
+    // 2. 투명하지 않은 픽셀의 Bounding Box 계산
+    // data 배열은 [R, G, B, A, R, G, B, A, ...] 형태
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const alphaIndex = (y * width + x) * 4 + 3; // Alpha 값 위치
+        
+        // 알파 값이 0보다 크면 (투명하지 않은 픽셀)
+        if (data[alphaIndex] > 0) {
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+        }
+      }
+    }
+
+    // 그려진 그림이 없는 경우
+    if (maxX === -1 || maxY === -1) {
+      console.warn('캔버스에 그려진 그림이 없습니다.');
+      return null; 
+    }
+
+    // 3. 자를 크기 산출
+    const cropWidth = maxX - minX + 1;
+    const cropHeight = maxY - minY + 1;
+
+    const targetHeight = Math.round((cropHeight / cropWidth) * targetWidth);
+
+    // 4. 잘라낸 그림을 담을 임시 캔버스 생성
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = targetWidth;
+    tempCanvas.height = targetHeight;
+    const tempCtx = tempCanvas.getContext('2d');
+
+    // 이미지 픽셀이 뭉개질 때 부드럽게 고품질로 리사이징되도록 설정
+  tempCtx.imageSmoothingEnabled = true;
+  tempCtx.imageSmoothingQuality = 'high';
+
+    // 원본 캔버스에서 Bounding Box 영역만 임시 캔버스로 복사
+    tempCtx.drawImage(
+      canvas,
+      minX, minY, cropWidth, cropHeight, // 원본 위치 및 크기
+      0, 0, targetWidth, targetHeight        // 임시 캔버스 위치 및 크기
+    );
+
+    // 5. 딱 맞는 크기의 DataURL 반환
+    return tempCanvas.toDataURL(type);
+  }
+
   // 단계 이동 핸들링
   #initStepEvents() {
     // Step 1 -> Step 2
@@ -227,7 +295,8 @@ class IpadApp {
         alert('꽃을 그려주신 후 다음 단계로 이동해주세요! 🌸');
         return;
       }
-      this.#flowerDataUrl = this.#canvas.toDataURL('image/png');
+      // this.#flowerDataUrl = this.#canvas.toDataURL('image/png');
+      this.#flowerDataUrl = this.#getCroppedDataURL(this.#canvas);
       this.#switchStep(2);
     });
 
@@ -495,9 +564,15 @@ class IpadApp {
     }
     const nameInput = document.getElementById('owner-name');
     if (nameInput) nameInput.value = '';
-
     this.#posX = 0.5;
     this.#posY = 0.5;
+
+    const dragItem = document.getElementById('user-flower-drag');
+    if (dragItem) {
+      dragItem.style.left = `${this.#posX * 100}%`;
+      dragItem.style.top = `${this.#posY * 100}%`;
+    }
+
     this.#switchStep(1);
   }
 }
