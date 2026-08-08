@@ -12,11 +12,11 @@
     <!-- 관리자 헤더 -->
     <header class="admin-header">
       <div class="admin-title">
-        <span>⚙️</span> 중보의 정원(Admin)
+        중보의 정원
       </div>
       <div>
         <button class="btn btn-primary" id="btn-open-create-modal">
-          <span>➕</span> 새 씬(Scene) 생성
+          새 씬 생성
         </button>
       </div>
     </header>
@@ -28,25 +28,25 @@
 
     <!-- 우클릭 커스텀 드롭다운 메뉴 -->
     <div class="context-menu" id="admin-context-menu">
-      <div class="context-menu-item" id="ctx-set-main">★ 메인 씬으로 설정</div>
-      <div class="context-menu-item" id="ctx-rename">✏️ 이름 변경</div>
-      <div class="context-menu-item danger" id="ctx-delete">🗑️ 삭제</div>
+      <div class="context-menu-item" id="ctx-set-main">메인 씬으로 설정</div>
+      <div class="context-menu-item" id="ctx-rename">✏이름 변경</div>
+      <div class="context-menu-item danger" id="ctx-delete">삭제</div>
     </div>
 
     <!-- 새 씬 생성 모달 -->
     <div class="modal-overlay" id="create-scene-modal">
       <div class="modal-card">
-        <h3 class="modal-title">✨ 새로운 정원 씬(Scene) 생성</h3>
+        <h3 class="modal-title">새로운 정원 씬(Scene) 생성</h3>
         <p class="modal-desc">전시회에서 사용할 새로운 정원 씬의 이름을 입력해 주세요.</p>
         
         <div style="margin-bottom: 24px; text-align: left;">
-          <label style="display: block; font-size: 0.9rem; color: var(--text-main); margin-bottom: 8px; font-weight: 600;">씬 이름 (Scene Name)</label>
+          <label style="display: block; font-size: 0.9rem; color: var(--text-main); margin-bottom: 8px; font-weight: 600;">씬 이름</label>
           <input type="text" id="new-scene-name" class="form-input" placeholder="예: 봄빛 정원, 가을 기도 정원" maxlength="30">
         </div>
 
         <div class="modal-actions">
           <button class="btn" id="btn-cancel-create">취소</button>
-          <button class="btn btn-primary" id="btn-submit-create">생성 및 저장 💾</button>
+          <button class="btn btn-primary" id="btn-submit-create">생성 및 저장</button>
         </div>
       </div>
     </div>

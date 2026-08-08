@@ -44,8 +44,8 @@
                     <div class="toolbar-group-title">배경 이미지</div>
                     <div style="display: flex; gap: 8px;">
                         <input type="file" id="bg-file-input" accept="image/*,video/*" style="display: none;">
-                        <button class="btn" id="btn-select-bg" style="flex: 1;">📂 미디어 파일 선택</button>
-                        <button class="btn btn-danger" id="btn-reset-bg" title="배경 제거">🗑️</button>
+                        <button class="btn" id="btn-select-bg" style="flex: 1;">파일 선택</button>
+                        <button class="btn btn-danger" id="btn-reset-bg" title="배경 제거">파일 제거</button>
                     </div>
                 </div>
 
@@ -53,11 +53,11 @@
 
                 <!-- 2. 선택된 꽃 속성 편집 및 삭제 패널 -->
                 <div>
-                    <div class="toolbar-group-title">🌸 선택된 꽃 속성 편집</div>
+                    <div class="toolbar-group-title">선택된 꽃 속성 편집</div>
                     <div id="flower-editor-panel" style="opacity: 0.5; pointer-events: none;">
                         <p id="no-flower-selected-msg"
                             style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
-                            좌측 프리뷰에서 수정할 꽃을 클릭해 선택해 주세요.
+                            수정할 꽃을 선택하세요.
                         </p>
 
                         <div style="margin-bottom: 16px;">
@@ -67,40 +67,19 @@
 
                         <div style="margin-bottom: 20px;">
                             <label class="form-label" style="font-size: 0.85rem;">이름표 앵커 (9가지)</label>
-                            <div class="anchor-grid-3x3">
-                                <div class="anchor-cell" data-anchor="top-left">
-                                    <div class="anchor-dot"></div>
-                                </div>
+                            <div class="anchor-grid-1x2">
                                 <div class="anchor-cell" data-anchor="top">
-                                    <div class="anchor-dot"></div>
-                                </div>
-                                <div class="anchor-cell" data-anchor="top-right">
-                                    <div class="anchor-dot"></div>
-                                </div>
-                                <div class="anchor-cell" data-anchor="left">
-                                    <div class="anchor-dot"></div>
-                                </div>
-                                <div class="anchor-cell" data-anchor="center">
-                                    <div class="anchor-dot"></div>
-                                </div>
-                                <div class="anchor-cell" data-anchor="right">
-                                    <div class="anchor-dot"></div>
-                                </div>
-                                <div class="anchor-cell" data-anchor="bottom-left">
-                                    <div class="anchor-dot"></div>
+                                    <div class="anchor-dot">상단</div>
                                 </div>
                                 <div class="anchor-cell" data-anchor="bottom">
-                                    <div class="anchor-dot"></div>
-                                </div>
-                                <div class="anchor-cell" data-anchor="bottom-right">
-                                    <div class="anchor-dot"></div>
+                                    <div class="anchor-dot">하단</div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- 선택한 꽃 삭제 버튼 (★ 필수) -->
                         <button class="btn btn-danger" id="btn-delete-selected-flower" style="width: 100%;">
-                            🗑️ 선택한 꽃 삭제
+                            선택한 꽃 삭제
                         </button>
                     </div>
                 </div>
@@ -110,7 +89,7 @@
         <!-- 꽃 삭제 승인 확인 모달 -->
         <div class="modal-overlay" id="delete-flower-modal">
             <div class="modal-card">
-                <h3 class="modal-title" style="color: var(--danger);">🗑️ 꽃 삭제 확인</h3>
+                <h3 class="modal-title" style="color: var(--danger);">️꽃 삭제 확인</h3>
                 <p class="modal-desc">정말 선택하신 꽃을 삭제하시겠습니까?<br>삭제 후에는 복구할 수 없습니다.</p>
                 <div class="modal-actions">
                     <button class="btn" id="btn-cancel-flower-delete">취소</button>
@@ -122,13 +101,13 @@
         <!-- 게시 (Publish) 승인 확인 모달 -->
         <div class="modal-overlay" id="publish-modal">
             <div class="modal-card">
-                <h3 class="modal-title">🚀 정원 게시 (Publish)</h3>
+                <h3 class="modal-title">정원 게시 (Publish)</h3>
                 <p class="modal-desc">
                     배경 미디어 교체 및 꽃 위치/속성/삭제 변경 사항을<br>프로젝터 화면 및 참가자 아이패드에 최종 반영하시겠습니까?
                 </p>
                 <div class="modal-actions">
                     <button class="btn" id="btn-cancel-publish">취소</button>
-                    <button class="btn btn-primary" id="btn-confirm-publish">게시 실행 ✨</button>
+                    <button class="btn btn-primary" id="btn-confirm-publish">게시 실행</button>
                 </div>
             </div>
         </div>
